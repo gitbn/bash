@@ -1,64 +1,72 @@
-#!/bin/bash 
-#stop si le script si une erreur 
-set -e
-
-#log stdout stderr dans log.txt
-(
-
-#Menu
+ #!/bin/bash
 while true
 do
-	PS3="Choix? "
-	echo " "
-	echo -e "\033[36mQuel Docker installer sur le serveur? \033[0m"
-	echo " "
-	select choix in "menu1" "menu2" "menu3" "Quitter (q|Q)";
-		do 
-			case $REPLY in 
-				#choix: Installation de Stack LAMP
-			1)	echo -e "\033[36mInstallation du container : $choix. \033[0m"
+    echo -e "\033[36m Menu \033[0m"
+    PS3='Choix? '
+    select choix in "menu1" "menu2" "menu3" "Quitter (q|Q)";
+        do
+            case $REPLY in
+            1)  back=0
+                while true
+                do
+                    PS3='Choix? '
+                    select choix in "smenu1" "smenu2" "smenu3" "Retour";
+                        do
+                            case $REPLY in
+                            1)  echo -e "\033[36m $choix \033[0m"
+                             break
+                             ;;
 
-				select choix in "sous menu1" "sous menu2" "Quitter (q|Q)";
-					do 
-						case $REPLY in 
-							1)	echo -e "\033[36mInstallation du container : $choix. \033[0m"
-								continue
-								;;
-							2)	echo -e "\033[36mInstallation du container : $choix. \033[0m"
-								continue
-								;;
-							3|Q*|q*) echo -e "\033[36mByebye \033[0m"
-								echo -e "\033[36m Retour au menu \033[0m"
-								break;; 
-							  *) echo "Faute de frappe !";;
-						esac
-					done
-				
-			    continue
-			    ;;
+                            ###################################################################
 
-			    ###################################################################
+                            2)  echo -e "\033[36m $choix \033[0m"
+                             break
+                             ;;
 
-				#choix: Installation de Nginx-php-fqm
-			2)	echo -e "\033[36mInstallation du container : $choix. \033[0m"
-				
-			    ;;
+                            ###################################################################
 
-			    ###################################################################
+                            3)  echo -e "\033[36m $choix \033[0m"
+                             break
+                             ;;
 
-				#choix: Installation de MariaDB
-			3)	echo -e "\033[36mInstallation du container : $choix. \033[0m"
-				
-			    continue
-			    ;;
+                            ###################################################################
 
-			    ###################################################################
+                            4)
+                             back=1
+                             break
+                             ;;
+                        *) echo "Faute de frappe !";;
+                    esac
+                done
+                if [[ $back == 1 ]]; then
+                    break
+                fi
+                done
+            break
+            ;;
 
-				#choix: quit avec la touche 4,Q ou q
-			6|Q*|q*) echo -e "\033[36mByebye \033[0m"
-			     break;; 
-			  *) echo "Faute de frappe !";;
-		esac
-	done
+            ###################################################################
+
+            2)  echo -e "\033[36m $choix \033[0m"
+            break
+            ;;
+
+            ###################################################################
+
+            3)  echo -e "\033[36m $choix \033[0m"
+            break
+            ;;
+
+            ###################################################################
+
+         4|Q*|q*)
+            echo -e "\033[36m Bye.. \033[0m"
+            exit
+            ;;
+
+            ###################################################################
+
+            *) echo "Faute de frappe !";;
+        esac
+    done
 done
-) 2>&1 | tee -a log.txt
